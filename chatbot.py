@@ -4,7 +4,7 @@ import re
 import nltk
 
 def querries(query):
-    cat_data = urllib.request.urlopen('https://en.wikipedia.org/wiki/Norway').read()
+    cat_data = urllib.request.urlopen("https://en.wikipedia.org/wiki/Cat").read()
     cat_data_paragraphs  = bs.BeautifulSoup(cat_data,'lxml').find_all('p')
     cat_text = ''
     for p in cat_data_paragraphs:
