@@ -3,19 +3,20 @@ import urllib.request
 import re
 import nltk
 
+
 def querries(query):
-    cat_data = urllib.request.urlopen("https://en.wikipedia.org/wiki/Cat").read()
-    cat_data_paragraphs  = bs.BeautifulSoup(cat_data,'lxml').find_all('p')
+    cat_data = urllib.request.urlopen("https://en.wikipedia.org/wiki/India").read()
+    # cat_data = urllib.request.urlopen("https://drive.google.com/file/d/1auHIrTRMmqnvAVzYwpN18ksxtSNHjXW7/view").read()
+    cat_data_paragraphs = bs.BeautifulSoup(cat_data, 'lxml').find_all('p')
     cat_text = ''
     for p in cat_data_paragraphs:
         cat_text += p.text.lower()
-    #print(cat_text)
+    # print(cat_text)
 
-    cat_text = re.sub(r'\s+', ' ',re.sub(r'\[[0-9]*\]', ' ', cat_text))
+    cat_text = re.sub(r'\s+', ' ', re.sub(r'\[[0-9]*]', ' ', cat_text))
 
     nltk.download('punkt')
     cat_sentences = nltk.sent_tokenize(cat_text)
-
 
     from sklearn.metrics.pairwise import cosine_similarity
     from sklearn.feature_extraction.text import TfidfVectorizer
@@ -39,14 +40,13 @@ def querries(query):
         else:
             return answer
 
-
-    #print("Hello, I am the Cat Chatbot. What is your meow questions?:")
-    while(True):
-        #query = input().lower()
+    # print("Hello, I am the Cat Chatbot. What is your meow questions?:")
+    while True:
+        # query = input().lower()
         if query not in ['bye', 'good bye', 'take care']:
-            lmnop=chatbot_answer(query)
+            lmnop = chatbot_answer(query)
             cat_sentences.remove(query)
-            return(lmnop)
+            return lmnop
         else:
             return "See You Again"
             break
