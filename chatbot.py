@@ -23,30 +23,38 @@ def querries(query):
 
 
     def chatbot_answer(user_query):
-        # Append the query to the sentences list
+        # adding the input query at the last position of sentence vector
         gett_sentences.append(user_query)
-        # Create the sentences vector based on the list
+        # creation of vectorizer based on tfidf metric
         vectorizer = TfidfVectorizer()
+        # getting tfidf values for all sentence vectors
         sentences_vectors = vectorizer.fit_transform(gett_sentences)
 
-        # Measure the cosine similarity and take the second closest index because the first index is the user query
+        # calculation of cosine similarity metric for all sentences w.r.t. input query sentence
         vector_values = cosine_similarity(sentences_vectors[-1], sentences_vectors)
+        # Extracting the sentence with second highest cosine similarity value
+        # All the sentences are sorted in increasing order of cosine similarity
+        # As the last sentence is the input query itself, hence it has highest cosine similarity
+        # Therefore, we are choosing the sentence with second highest cosine similarity
         answer = gett_sentences[vector_values.argsort()[0][-2]]
-        # Final check to make sure there are result present. If all the result are 0, means the text input by us are not captured in the corpus
+        # getting the actual sentence from the senctence vector
         input_check = vector_values.flatten()
+        # Here the sorting is happening
         input_check.sort()
 
+        # checking if the sentence is valid or not
         if input_check[-2] == 0:
-            return "Please Try again"
+            return "Query not valid. Kindly Try again"
         else:
             return answer
 
+    # functionality to exit the program
     while True:
-        # query = input().lower()
+        # if user input is one of the below keywords --> Then, exit the program with a message.
         if query not in ['bye', 'good bye', 'take care']:
             lmnop = chatbot_answer(query)
             gett_sentences.remove(query)
             return lmnop
         else:
-            return "See You Again"
+            return "Thanks for coming, Visit Again!!!"
             break
